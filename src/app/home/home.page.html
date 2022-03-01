@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="currentPage$ | async as currentPage">
+      Current page: {{currentPage}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="currentPageData$ | async as passengers; else loading">
+    <ion-list>
+      <ion-item *ngFor="let passenger of passengers; trackBy: trackByFn">
+        <ion-label>{{passenger.data.author}}</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data..."
+      >
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-container>
+
+  <ng-template #loading>
+    <ion-list>
+      <ion-item *ngFor="let arr of [1, 2, 3, 4]">
+        <ion-label><ion-skeleton-text animated></ion-skeleton-text></ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+</ion-content>
